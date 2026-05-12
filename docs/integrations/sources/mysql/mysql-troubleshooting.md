@@ -24,7 +24,7 @@ _where_ it is deployed.
 
 #### Digital Ocean MySQL
 
-Digital Ocean's managed MySQL servers, by default, will clear the binary logs periodically, outside of the replication settings within the MySQL server.. Contact Digital Ocean support to disable this feature if you wish to use CDC replication with Airbyte.
+Digital Ocean's managed MySQL servers, by default, will clear the binary logs periodically, outside of the replication settings within the MySQL server. Contact Digital Ocean support to disable this feature if you wish to use CDC replication with Airbyte.
 
 #### PlanetScale
 
