@@ -125,7 +125,7 @@ Add the following scopes to your custom app to ensure Airbyte can sync all avail
 
 The Shopify source connector supports both Full Refresh and Incremental syncs. For more information, see [sync modes](https://docs.airbyte.com/cloud/core-concepts/#connection-sync-modes).
 
-This source syncs data using the [Shopify REST API](https://shopify.dev/api/admin-rest), the [Shopify GraphQL API](https://shopify.dev/api/admin-graphql), and the [Shopify GraphQL BULK API](https://shopify.dev/docs/api/usage/bulk-operations/queries). Streams labeled "(GraphQL)" in the list below use the GraphQL or BULK API; unlabeled streams use the REST API.
+This source syncs data using the [Shopify REST API](https://shopify.dev/api/admin-rest), the [Shopify GraphQL API](https://shopify.dev/api/admin-graphql), and the [Shopify GraphQL BULK API](https://shopify.dev/docs/api/usage/bulk-operations/queries). The connector currently requests Shopify Admin API version `2025-10`. Shopify releases new Admin API versions quarterly and supports each stable version for at least 12 months. For more information, see [Shopify API versioning](https://shopify.dev/docs/api/usage/versioning). Streams labeled "(GraphQL)" in the list below use the GraphQL or BULK API; unlabeled streams use the REST API.
 
 ## Supported Streams
 
@@ -201,6 +201,28 @@ Data related to [marketing attribution](https://www.shopify.com/au/blog/marketin
 | `object`         | `object`     |
 | `boolean`        | `boolean`    |
 
+## Reference
+
+This connector sends requests to `https://{shop}.myshopify.com/admin/api/2025-10/` for REST Admin API streams and `https://{shop}.myshopify.com/admin/api/2025-10/graphql.json` for GraphQL and GraphQL Bulk streams. The `shop` value is the Shopify store name from the connector configuration.
+
+For programmatic configuration, use these parameter names:
+
+| Field | Required | Description |
+| ----- | :------: | ----------- |
+| `shop` | Yes | Shopify store name. For example, if your store URL is `https://example.myshopify.com`, use `example` or `example.myshopify.com`. Don't include `https://`. |
+| `credentials.auth_method` | Yes | Authentication method. Valid values are `oauth2.0` and `api_password`. |
+| `credentials.client_id` | Required for OAuth 2.0 authentication | Client ID of the Shopify developer application. |
+| `credentials.client_secret` | Required for OAuth 2.0 authentication | Client secret of the Shopify developer application. |
+| `credentials.access_token` | Required for OAuth 2.0 authentication | Access token for authenticated Shopify Admin API requests. |
+| `credentials.api_password` | Required for API password authentication | Admin API access token from a Shopify custom app. |
+| `start_date` | No | Date in `YYYY-MM-DD` format. Records created before this date aren't replicated. Defaults to `2020-01-01`. |
+| `bulk_window_in_days` | No | Number of days to include in each GraphQL Bulk job date range. Defaults to `30`. |
+| `fetch_transactions_user_id` | No | If `true`, sync the `Transactions` stream through the REST API to include the `user_id` field. If `false`, sync transactions through the GraphQL API. Defaults to `false`. |
+| `job_product_variants_include_pres_prices` | No | If `true`, include presentment prices in the `Product Variants` stream. Defaults to `true`. |
+| `job_termination_threshold` | No | Maximum time, in seconds, for a single GraphQL Bulk job before the connector cancels and retries it. Valid values are `3600` through `21600`. Defaults to `7200`. |
+| `job_checkpoint_interval` | No | Number of rows to collect from a single GraphQL Bulk job before checkpointing. Valid values are `15000` through `1000000`. Defaults to `100000`. |
+| `fulfillment_orders_include_closed` | No | If `true`, include closed fulfillment orders in the `Fulfillment Orders` stream. Shopify excludes closed fulfillment orders by default. Defaults to `false`. |
+
 ## Limitations & Troubleshooting
 
 </HideInUI>
@@ -259,7 +281,7 @@ If you synced one of these streams on an earlier connector version and suspect m
 | 3.3.2 | 2026-04-24 | [76969](https://github.com/airbytehq/airbyte/pull/76969) | Replace in-memory sort of bulk GraphQL records with a disk-backed external merge sort to fix OOM failures on large metafield syncs |
 | 3.3.1 | 2026-04-22 | [76920](https://github.com/airbytehq/airbyte/pull/76920) | Fix `AttributeError` from null logger in `LimitReducingErrorHandler` when handling non-500 HTTP errors |
 | 3.3.0 | 2026-04-15 | [76327](https://github.com/airbytehq/airbyte/pull/76327) | Upgrade airbyte-cdk dependency from v6 to v7 |
-| 3.2.3 | 2026-03-20 | [75255](https://github.com/airbytehq/airbyte/pull/75255) | Upgrade Shopify API version from 2025-01 to 2025-10 |
+| 3.2.3 | 2026-03-26 | [75255](https://github.com/airbytehq/airbyte/pull/75255) | Upgrade Shopify API version from 2025-01 to 2025-10 |
 | 3.2.2 | 2026-03-09 | [72849](https://github.com/airbytehq/airbyte/pull/72849) | Fix missing fulfillment orders by querying fulfillmentOrders endpoint directly; add configurable `fulfillment_orders_include_closed` option (default: false) |
 | 3.2.1 | 2026-02-04 | [72810](https://github.com/airbytehq/airbyte/pull/72810) | feat(source-shopify): Add id and position fields to product_variants.options schema (AI-Triage PR) |
 | 3.2.0 | 2026-01-20 | [72209](https://github.com/airbytehq/airbyte/pull/72209) | Add `CollectionProducts` stream for all product-collection associations |
