@@ -125,7 +125,7 @@ Add the following scopes to your custom app to ensure Airbyte can sync all avail
 
 The Shopify source connector supports both Full Refresh and Incremental syncs. For more information, see [sync modes](https://docs.airbyte.com/cloud/core-concepts/#connection-sync-modes).
 
-This source syncs data using the [Shopify REST API](https://shopify.dev/api/admin-rest), the [Shopify GraphQL API](https://shopify.dev/api/admin-graphql), and the [Shopify GraphQL BULK API](https://shopify.dev/docs/api/usage/bulk-operations/queries). The connector currently requests Shopify Admin API version `2025-10`. Shopify releases new Admin API versions quarterly and supports each stable version for at least 12 months. For more information, see [Shopify API versioning](https://shopify.dev/docs/api/usage/versioning). Streams labeled "(GraphQL)" in the list below use the GraphQL or BULK API; unlabeled streams use the REST API.
+This source syncs data using the [Shopify REST API](https://shopify.dev/api/admin-rest), the [Shopify GraphQL API](https://shopify.dev/api/admin-graphql), and the [Shopify GraphQL BULK API](https://shopify.dev/docs/api/usage/bulk-operations/queries). The connector currently requests Shopify Admin API version `2025-10`. Shopify releases new Admin API versions quarterly and supports each stable version for at least 12 months. For more information, see [Shopify API versioning](https://shopify.dev/docs/api/usage/versioning). Streams labeled "(GraphQL)" in the list below use the GraphQL or BULK API; unlabeled streams use the REST API.
 
 ## Supported Streams
 
