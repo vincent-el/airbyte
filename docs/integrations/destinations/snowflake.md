@@ -163,9 +163,9 @@ enter the following fields:
 | Field | Description |
 | :---- | :---------- |
 | Private Key | The full PEM-formatted private key, including the `BEGIN PRIVATE KEY` or `BEGIN ENCRYPTED PRIVATE KEY` header and matching footer. |
-| Passphrase (Optional) | The passphrase for the private key. Leave this empty for an unencrypted private key. |
+| Passphrase (Optional) | The passphrase for the private key. Leave this empty for a private key that isn't encrypted. |
 
-Airbyte supports unencrypted PKCS#8 private keys and encrypted PKCS#8 private keys. Connector version
+Airbyte supports PKCS#8 private keys that are encrypted or not encrypted. Connector version
 4.0.42 and later support encrypted private keys generated with Snowflake's documented OpenSSL command,
 including `-v2 des3`.
 
