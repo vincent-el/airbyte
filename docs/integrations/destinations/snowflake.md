@@ -27,15 +27,15 @@ If you're using Airbyte Cloud, add Airbyte's
 To determine whether a network policy is set on your account or for a specific user, execute the
 _SHOW PARAMETERS_ command.
 
-**Account**
+**Account:**
 
-```
+```sql
 SHOW PARAMETERS LIKE 'network_policy' IN ACCOUNT;
 ```
 
-**User**
+**User:**
 
-```
+```sql
 SHOW PARAMETERS LIKE 'network_policy' IN USER <username>;
 ```
 
@@ -54,8 +54,8 @@ You can use the following script in a new
 [Snowsight worksheet](https://docs.snowflake.com/en/user-guide/ui-snowsight-worksheets-gs) to create the
 entities:
 
-1.  [Log into your Snowflake account](https://www.snowflake.com/login/).
-2.  Edit the following script to change the password to a more secure password and to change the
+1. [Log into your Snowflake account](https://www.snowflake.com/login/).
+1. Edit the following script to change the password to a more secure password and to change the
     names of other resources if you so desire.
 
     **Note:** Make sure you follow the
@@ -115,7 +115,7 @@ to role identifier($airbyte_role);
 commit;
 ```
 
-3. Run the script using [Snowsight](https://docs.snowflake.com/en/user-guide/ui-snowsight-gs.html). Select and highlight the entire query before running it.
+1. Run the script using [Snowsight](https://docs.snowflake.com/en/user-guide/ui-snowsight-gs.html). Select and highlight the entire query before running it.
 
 Note: Our integration automatically creates the necessary schemas in your Snowflake destination database.
 To enable this, ensure the connection user has `CREATE SCHEMA` privileges on the target database.
@@ -182,6 +182,7 @@ to [Working with Temporary and Transient Tables](https://docs.snowflake.com/en/u
 ### Raw Table schema
 
 The raw table contains these fields:
+
 - `_airbyte_raw_id`
 - `_airbyte_generation_id`
 - `_airbyte_extracted_at`
@@ -189,7 +190,7 @@ The raw table contains these fields:
 - `_airbyte_meta`
 - `_airbyte_data`
 
-`_airbyte_data` is a JSON blob with the event data. See [here](/platform/understanding-airbyte/airbyte-metadata-fields)
+`_airbyte_data` is a JSON blob with the event data. See [Airbyte metadata fields](/platform/understanding-airbyte/airbyte-metadata-fields)
 for more information about the other fields.
 
 **Note:** Although the contents of the `_airbyte_data` are fairly stable, schema of the raw table
@@ -205,7 +206,7 @@ The final table contains these fields, in addition to the columns declared in yo
 - `_AIRBYTE_LOADED_AT`
 - `_AIRBYTE_META`
 
-Again, see [here](/platform/understanding-airbyte/airbyte-metadata-fields) for more information about these fields.
+See [Airbyte metadata fields](/platform/understanding-airbyte/airbyte-metadata-fields) for more information about these fields.
 
 ## Data type map
 
