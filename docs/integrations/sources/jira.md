@@ -8,15 +8,68 @@ This page contains the setup guide and reference information for the [Jira](http
 
 ## Prerequisites
 
-- API Token
-- Domain
-- Email
+- A Jira Cloud site.
+- The Jira host name, for example `airbyteio.atlassian.net`. Enter the host name only. Don't include `https://`, paths, query parameters, or fragments.
+- One of the following authentication methods:
+  - **API Token**: an Atlassian account email address and API token.
+  - **OAuth 2.0**: an Atlassian OAuth 2.0 app or Airbyte Cloud OAuth authorization with access to the Jira site.
 
 ## Setup guide
 
 ### Step 1: Set up Jira
 
-1. To get access to the Jira API you need to create an API token, please follow the instructions in this [documentation](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/).
+Choose one of the following authentication methods.
+
+**API Token**
+
+Create an API token from your Atlassian account. For instructions, see [Manage API tokens for your Atlassian account](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/) in the Atlassian documentation. Use the email address for the Atlassian account that created the token.
+
+Atlassian sets an expiration date on newly created API tokens. If syncs start failing after a token expires, create a new token and update the source configuration.
+
+**OAuth 2.0**
+
+Use OAuth 2.0 if you want Airbyte to authenticate through an Atlassian OAuth 2.0 app instead of an API token. If you manage your own OAuth app, configure it in the [Atlassian developer console](https://developer.atlassian.com/console/myapps/) and authorize it for the Jira site you want to sync.
+
+The connector requests the OAuth scopes required by its Jira REST API streams. Jira permissions still apply. The authenticated Atlassian account can only sync data that account can access in Jira.
+
+<details>
+<summary>OAuth scopes requested by the connector</summary>
+
+- `read:jira-work`
+- `read:jql:jira`
+- `read:group:jira`
+- `read:project-role:jira`
+- `read:issue-details:jira`
+- `read:status:jira`
+- `read:jira-user`
+- `read:user:jira`
+- `read:avatar:jira`
+- `read:webhook:jira`
+- `read:project-category:jira`
+- `read:screenable-field:jira`
+- `read:screen-field:jira`
+- `offline_access`
+- `read:board-scope:jira-software`
+- `read:project:jira`
+- `read:sprint:jira-software`
+- `read:application-role:jira`
+- `read:field-configuration:jira`
+- `read:notification-scheme:jira`
+- `read:issue-security-scheme:jira`
+- `read:issue-security-level:jira`
+- `read:issue-type-scheme:jira`
+- `read:issue-type-screen-scheme:jira`
+- `read:permission-scheme:jira`
+- `read:screen:jira`
+- `read:screen-scheme:jira`
+- `read:screen-tab:jira`
+- `read:workflow:jira`
+- `read:workflow-scheme:jira`
+- `read:project.email:jira`
+- `read:custom-field-contextual-configuration:jira`
+- `manage:jira-configuration`
+
+</details>
 
 ### Step 2: Set up the Jira connector in Airbyte
 
@@ -28,11 +81,12 @@ This page contains the setup guide and reference information for the [Jira](http
 2. Click Sources and then click + New source.
 3. On the Set up the source page, select Jira from the Source type dropdown.
 4. Enter a name for the Jira connector.
-5. Enter the **API Token** that you have created. **API Token** is used for Authorization to your account by BasicAuth.
-6. Enter the **Domain** for your Jira account, e.g. `airbyteio.atlassian.net`.
-7. Enter the **Email** for your Jira account which you used to generate the API token. This field is used for Authorization to your account by BasicAuth.
-8. Enter the list of **Projects (Optional)** for which you need to replicate data, or leave it empty if you want to replicate data for all projects.
-9. Enter the **Start Date (Optional)** from which you'd like to replicate data for Jira in the format YYYY-MM-DDTHH:MM:SSZ. All data generated after this date will be replicated, or leave it empty if you want to replicate all data. Note that it will be used only in the following streams: Board Issues, Issue Comments, Issue Properties, Issue Remote Links, Issue Votes, Issue Watchers, Issue Worklogs, Issues, Pull Requests, Sprint Issues. For other streams it will replicate all data.
+5. Choose an **Authentication** method.
+   - For **API Token**, enter the **Email** for your Atlassian account and the **API Token** that you created.
+   - For **OAuth 2.0**, follow the Airbyte Cloud authorization flow.
+6. Enter the **Domain** for your Jira site, for example `airbyteio.atlassian.net`. Enter the host name only. The connector normalizes values with `http://`, `https://`, or trailing slashes before validation, but it rejects values with paths, query parameters, fragments, or whitespace.
+7. Enter the list of **Projects (Optional)** to replicate data for, or leave it empty to replicate data for all projects.
+8. Enter the **Start Date (Optional)** from which you'd like to replicate data from Jira in the format `YYYY-MM-DDTHH:MM:SSZ`. Leave it empty to replicate all available data. This field applies to incremental streams and their child streams. Other streams replicate all available data.
 
 <!-- /env:cloud -->
 
@@ -43,11 +97,12 @@ This page contains the setup guide and reference information for the [Jira](http
 2. Click Sources and then click + New source.
 3. On the Set up the source page, select Jira from the Source type dropdown.
 4. Enter a name for the Jira connector.
-5. Enter the **API Token** that you have created. **API Token** is used for Authorization to your account by BasicAuth.
-6. Enter the **Domain** for your Jira account, e.g. `airbyteio.atlassian.net`.
-7. Enter the **Email** for your Jira account which you used to generate the API token. This field is used for Authorization to your account by BasicAuth.
-8. Enter the list of **Projects (Optional)** for which you need to replicate data, or leave it empty if you want to replicate data for all projects.
-9. Enter the **Start Date (Optional)** from which you'd like to replicate data for Jira in the format YYYY-MM-DDTHH:MM:SSZ. All data generated after this date will be replicated, or leave it empty if you want to replicate all data. Note that it will be used only in the following streams: Board Issues, Issue Comments, Issue Properties, Issue Remote Links, Issue Votes, Issue Watchers, Issue Worklogs, Issues, Pull Requests, Sprint Issues. For other streams it will replicate all data.
+5. Choose an **Authentication** method.
+   - For **API Token**, enter the **Email** for your Atlassian account and the **API Token** that you created.
+   - For **OAuth 2.0**, enter the **Client ID**, **Client Secret**, and **Refresh Token** from your Atlassian OAuth 2.0 app.
+6. Enter the **Domain** for your Jira site, for example `airbyteio.atlassian.net`. Enter the host name only. The connector normalizes values with `http://`, `https://`, or trailing slashes before validation, but it rejects values with paths, query parameters, fragments, or whitespace.
+7. Enter the list of **Projects (Optional)** to replicate data for, or leave it empty to replicate data for all projects.
+8. Enter the **Start Date (Optional)** from which you'd like to replicate data from Jira in the format `YYYY-MM-DDTHH:MM:SSZ`. Leave it empty to replicate all available data. This field applies to incremental streams and their child streams. Other streams replicate all available data.
 
 <!-- /env:oss -->
 
@@ -123,44 +178,52 @@ This connector outputs the following incremental streams:
 - [Issues](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-search/#api-rest-api-3-search-get)
 - [Sprint issues](https://developer.atlassian.com/cloud/jira/software/rest/api-group-sprint/#api-rest-agile-1-0-sprint-sprintid-issue-get)
 
-If there are more endpoints you'd like Airbyte to support, please [create an issue.](https://github.com/airbytehq/airbyte/issues/new/choose)
+If there are more endpoints you'd like Airbyte to support, [create an issue](https://github.com/airbytehq/airbyte/issues/new/choose).
 
 ### Streams on I/O Usage
 
-In the list above, there is a subset of streams which requires to make one HTTP request per issue. Those streams can significantly slow down that a sync given a high number of issues. If you have one or many of those streams and experience slowness, we recommend filtering the list of issues using the list of projects in the configuration or simply removing those streams from the sync.
-* Issue comments
-* Issue properties
-* Issue remote links
-* Issue transactions
-* Issue votes
-* Issue watchers
-* Issue worklogs
+Some streams make one HTTP request per issue. These streams can slow down syncs for Jira sites with many issues. If one of these streams is slow, filter the sync to specific projects in the source configuration or remove the stream from the connection.
+
+- Issue comments
+- Issue properties
+- Issue remote links
+- Issue transitions
+- Issue votes
+- Issue watchers
+- Issue worklogs
 
 ### Entity-Relationship Diagram (ERD)
 <EntityRelationshipDiagram></EntityRelationshipDiagram>
-
-## Experimental Tables
-
-The following tables depend on undocumented internal Jira API endpoints and are
-therefore subject to stop working if those endpoints undergo major changes.
-While they will not cause a sync to fail, they may not be able to pull any data.
-Use the "Enable Experimental Streams" option when setting up the source to allow
-or disallow these tables to be selected when configuring a connection.
-
-- [Pull Requests](https://docs.airbyte.com/integrations/sources/jira#experimental-tables)
-
-:::note
-The experimental Pull Requests stream was removed in version 4.0.0 and is no longer available in the catalog.
-If you want to sync data using this stream, you must use version `<= 3.5.4`. This is only possible on self-deployed instances of Airbyte, and this stream is no longer supported on Airbyte Cloud.
-:::
 
 ## Troubleshooting
 
 Check out common troubleshooting issues for the Jira connector on our Airbyte Forum [here](https://github.com/airbytehq/airbyte/discussions).
 
-## Rate Limiting & Performance
+## Rate limiting and performance
 
-The Jira connector should not run into Jira API limitations under normal usage. Please [create an issue](https://github.com/airbytehq/airbyte/issues) if you see any rate limit issues that are not automatically retried successfully.
+Jira Cloud returns `429 Too Many Requests` when a request exceeds a rate limit. The connector is configured to retry failed API requests. Under normal usage, you shouldn't need to tune the connector for rate limits.
+
+High-volume syncs that include per-issue streams can make many Jira API requests. To reduce request volume, configure the **Projects (Optional)** field to sync only the projects you need, or remove unused per-issue streams from the connection.
+
+## Reference
+
+This connector uses the [Jira Cloud Platform REST API v3](https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/) and the [Jira Software Cloud REST API](https://developer.atlassian.com/cloud/jira/software/rest/intro/).
+
+For programmatic configuration, use these parameter names:
+
+| Field | Required | Description |
+| :--- | :---: | :--- |
+| `credentials.auth_type` | Yes | Authentication method. Valid values are `API Token` and `OAuth2.0`. |
+| `credentials.email` | Required for API Token | Atlassian account email address used with the API token. |
+| `credentials.api_token` | Required for API Token | Atlassian API token used as the HTTP Basic authentication password. |
+| `credentials.client_id` | Required for OAuth 2.0 | Client ID for the Atlassian OAuth 2.0 app. |
+| `credentials.client_secret` | Required for OAuth 2.0 | Client secret for the Atlassian OAuth 2.0 app. |
+| `credentials.refresh_token` | Required for OAuth 2.0 | Refresh token returned by the OAuth authorization flow. |
+| `domain` | Yes | Jira host name, for example `airbyteio.atlassian.net`. Don't include a protocol, path, query parameter, or fragment. |
+| `projects` | No | List of Jira project keys to replicate. Leave empty to replicate all projects. |
+| `start_date` | No | Date and time in `YYYY-MM-DDTHH:MM:SSZ` format. Incremental streams replicate records generated on or after this date. |
+| `lookback_window_minutes` | No | Number of minutes before the last cursor value to re-fetch on each incremental sync. Defaults to `0`. |
+| `num_workers` | No | Number of concurrent threads to use during a sync. Valid values are `1` through `40`. Defaults to `3`. |
 
 ## Changelog
 
@@ -170,8 +233,8 @@ The Jira connector should not run into Jira API limitations under normal usage. 
 | Version    | Date       | Pull Request                                               | Subject                                                                                                                                                                |
 |:-----------|:-----------|:-----------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | 4.4.1 | 2026-05-14 | [78088](https://github.com/airbytehq/airbyte/pull/78088) | Fix domain validation regression: auto-normalize domains with https:// prefix or trailing slashes |
-| 4.4.0 | 2026-05-06 | [76067](https://github.com/airbytehq/airbyte/pull/76067) | Add OAuth 2.0 authentication support with config migration |
-| 4.3.21 | 2026-05-04 | [77751](https://github.com/airbytehq/airbyte/pull/77751) | Add input validation for `domain` field |
+| 4.4.0 | 2026-05-11 | [76067](https://github.com/airbytehq/airbyte/pull/76067) | Add OAuth 2.0 authentication support with config migration |
+| 4.3.21 | 2026-05-05 | [77751](https://github.com/airbytehq/airbyte/pull/77751) | Add input validation for `domain` field |
 | 4.3.20 | 2026-04-21 | [76354](https://github.com/airbytehq/airbyte/pull/76354) | Bump SDM base image for deadlock fix |
 | 4.3.19 | 2026-04-21 | [76631](https://github.com/airbytehq/airbyte/pull/76631) | Update dependencies |
 | 4.3.18 | 2026-04-13 | [76276](https://github.com/airbytehq/airbyte/pull/76276) | Rename "concurrent workers" to "concurrent threads" in connector spec |
