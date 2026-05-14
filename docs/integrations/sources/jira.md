@@ -20,13 +20,13 @@ This page contains the setup guide and reference information for the [Jira](http
 
 Choose one of the following authentication methods.
 
-**API Token**
+#### API Token
 
 Create an API token from your Atlassian account. For instructions, see [Manage API tokens for your Atlassian account](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/) in the Atlassian documentation. Use the email address for the Atlassian account that created the token.
 
 Atlassian sets an expiration date on newly created API tokens. If syncs start failing after a token expires, create a new token and update the source configuration.
 
-**OAuth 2.0**
+#### OAuth 2.0
 
 Use OAuth 2.0 if you want Airbyte to authenticate through an Atlassian OAuth 2.0 app instead of an API token. If you manage your own OAuth app, configure it in the [Atlassian developer console](https://developer.atlassian.com/console/myapps/) and authorize it for the Jira site you want to sync.
 
@@ -75,7 +75,7 @@ The connector requests the OAuth scopes required by its Jira REST API streams. J
 
 <!-- env:cloud -->
 
-#### For Airbyte Cloud:
+#### For Airbyte Cloud
 
 1. [Log into your Airbyte Cloud](https://cloud.airbyte.com/workspaces) account.
 2. Click Sources and then click + New source.
@@ -91,7 +91,7 @@ The connector requests the OAuth scopes required by its Jira REST API streams. J
 <!-- /env:cloud -->
 
 <!-- env:oss -->
-#### For Airbyte Open Source:
+#### For Airbyte Open Source
 
 1. Navigate to the Airbyte Open Source dashboard.
 2. Click Sources and then click + New source.
@@ -193,11 +193,12 @@ Some streams make one HTTP request per issue. These streams can slow down syncs 
 - Issue worklogs
 
 ### Entity-Relationship Diagram (ERD)
+
 <EntityRelationshipDiagram></EntityRelationshipDiagram>
 
 ## Troubleshooting
 
-Check out common troubleshooting issues for the Jira connector on our Airbyte Forum [here](https://github.com/airbytehq/airbyte/discussions).
+See [Airbyte discussions](https://github.com/airbytehq/airbyte/discussions) for common Jira connector troubleshooting issues.
 
 ## Rate limiting and performance
 
