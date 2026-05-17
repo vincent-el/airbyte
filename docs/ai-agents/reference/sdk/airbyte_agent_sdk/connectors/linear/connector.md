@@ -259,7 +259,7 @@ Classes
             Example: lambda tokens: save_to_database(tokens)
     Examples:
         # Local mode (direct API calls)
-        connector = LinearConnector(auth_config=LinearAuthConfig(api_key="..."))
+        connector = LinearConnector(auth_config=LinearAuthConfig(client_id="...", client_secret="...", refresh_token="...", access_token="..."))
         # Hosted mode with explicit connector_id (no lookup needed)
         connector = LinearConnector(
             auth_config=AirbyteAuthConfig(

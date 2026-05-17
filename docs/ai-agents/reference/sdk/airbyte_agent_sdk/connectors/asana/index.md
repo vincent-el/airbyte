@@ -478,6 +478,33 @@ Classes
             for entity in entities:
                 print(f"\{entity['entity_name']\}: \{entity['available_actions']\}")
 
+<a id="AsanaOAuthCredentials"></a>
+
+`AsanaOAuthCredentials(**data: Any)`
+:   Asana OAuth App Credentials - Provide your own Asana OAuth app credentials to override the default Airbyte-managed ones.
+    
+    Create a new model by parsing and validating input data from keyword arguments.
+    
+    Raises [`ValidationError`][pydantic_core.ValidationError] if the input data cannot be
+    validated to form a valid model.
+    
+    `self` is explicitly positional-only to allow `self` as a field name.
+
+    ### Ancestors (in MRO)
+
+    * pydantic.main.BaseModel
+
+    ### Class variables
+
+    `client_id: str`
+    :   Your Asana OAuth app's client ID
+
+    `client_secret: str`
+    :   Your Asana OAuth app's client secret
+
+    `model_config`
+    :   The type of the None singleton.
+
 <a id="AttachmentsSearchData"></a>
 
 `AttachmentsSearchData(**data: Any)`

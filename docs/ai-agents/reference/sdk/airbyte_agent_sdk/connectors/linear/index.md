@@ -510,30 +510,6 @@ Classes
     `url: str | None`
     :   The type of the None singleton.
 
-<a id="LinearAuthConfig"></a>
-
-`LinearAuthConfig(**data: Any)`
-:   Linear API Key Authentication - Authenticate using your Linear API key
-    
-    Create a new model by parsing and validating input data from keyword arguments.
-    
-    Raises [`ValidationError`][pydantic_core.ValidationError] if the input data cannot be
-    validated to form a valid model.
-    
-    `self` is explicitly positional-only to allow `self` as a field name.
-
-    ### Ancestors (in MRO)
-
-    * pydantic.main.BaseModel
-
-    ### Class variables
-
-    `api_key: str`
-    :   Your Linear API key from Settings > API > Personal API keys
-
-    `model_config`
-    :   The type of the None singleton.
-
 <a id="LinearConnector"></a>
 
 `LinearConnector(auth_config: LinearAuthConfig | AirbyteAuthConfig | BaseModel | None = None, on_token_refresh: Any | None = None)`
@@ -554,7 +530,7 @@ Classes
             Example: lambda tokens: save_to_database(tokens)
     Examples:
         # Local mode (direct API calls)
-        connector = LinearConnector(auth_config=LinearAuthConfig(api_key="..."))
+        connector = LinearConnector(auth_config=LinearAuthConfig(client_id="...", client_secret="...", refresh_token="...", access_token="..."))
         # Hosted mode with explicit connector_id (no lookup needed)
         connector = LinearConnector(
             auth_config=AirbyteAuthConfig(
